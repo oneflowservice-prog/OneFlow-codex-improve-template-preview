@@ -70,7 +70,17 @@ export class DiscordService {
         attachments
       );
 
-      // Try webhook first if available and enabled
+      // Try bot first if available and enabled (primary mode)
+      if (
+        (this.deliveryMode === 'bot' || this.deliveryMode === 'both') &&
+        channelRoute.channelId &&
+        this.botToken
+      ) {
+        const botResult = await this.sendViaBot(channelRoute.channelId, enrichedEmbed);
+        if (botResult) return true;
+      }
+
+      // Fall back to webhook if available and enabled
       if (
         (this.deliveryMode === 'webhook' || this.deliveryMode === 'both') &&
         channelRoute.webhookUrl
@@ -82,19 +92,10 @@ export class DiscordService {
         if (webhookResult) return true;
       }
 
-      // Fall back to bot if available and enabled
-      if (
-        (this.deliveryMode === 'bot' || this.deliveryMode === 'both') &&
-        channelRoute.channelId &&
-        this.botToken
-      ) {
-        return await this.sendViaBot(channelRoute.channelId, enrichedEmbed);
-      }
-
-      // If both mode and neither worked, warn
-      if (!channelRoute.webhookUrl && !channelRoute.channelId) {
+      // Neither delivery method worked
+      if (!channelRoute.channelId && !channelRoute.webhookUrl) {
         console.warn(
-          `[Discord Logger] No webhook URL or channel ID configured ` +
+          `[Discord Logger] No channel ID or webhook URL configured ` +
             `for channel "${channelRoute.channelName}". Skipping.`
         );
         return false;

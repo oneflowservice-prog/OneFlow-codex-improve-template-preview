@@ -94,7 +94,8 @@ import { generateEventId } from '@/lib/logger/utils/formatters';
 // ----------------------------------------------------------------------------
 
 const DEFAULT_CONFIG: LoggerConfig = {
-  deliveryMode: 'webhook',
+  deliveryMode: (process.env.DISCORD_LOGGER_MODE as LoggerConfig['deliveryMode']) ?? 'bot',
+  botToken: process.env.DISCORD_BOT_TOKEN,
   enableQueue: true,
   maxRetries: 3,
   retryBaseDelay: 1000,
