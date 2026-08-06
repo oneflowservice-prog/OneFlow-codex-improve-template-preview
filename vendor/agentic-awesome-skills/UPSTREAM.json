@@ -1,0 +1,195 @@
+{
+  "repository": "https://github.com/sickn33/agentic-awesome-skills",
+  "release": "v15.1.0",
+  "commit": "b67a846c7c41cecbcc7ea69edba9fcecf3a04da1",
+  "selection": {
+    "categories": [
+      "development",
+      "backend",
+      "testing"
+    ],
+    "risk": [
+      "safe",
+      "none"
+    ],
+    "policy": "Reviewed Siteliyo engineering subset; excludes design/UI, deployment/publishing, offensive security, external-service/MCP/credential dependencies, destructive operations, and ambiguous risk."
+  },
+  "selectedSkills": [
+    {
+      "id": "api-design-principles",
+      "category": "backend",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/api-design-principles",
+      "description": "Master REST and GraphQL API design principles to build intuitive, scalable, and maintainable APIs that delight developers and stand the test of time."
+    },
+    {
+      "id": "api-endpoint-builder",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/api-endpoint-builder",
+      "description": "Builds production-ready REST API endpoints with validation, error handling, authentication, and documentation. Follows best practices for security and scalability."
+    },
+    {
+      "id": "brooks-lint",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/brooks-lint",
+      "description": "AI code reviewer grounded in classic software engineering books for catching design smells, coupling issues, and architectural risks."
+    },
+    {
+      "id": "code-documentation-code-explain",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/code-documentation-code-explain",
+      "description": "You are a code education expert specializing in explaining complex code through clear narratives, visual diagrams, and step-by-step breakdowns. Transform difficult concepts into understandable explanations for developers at all levels."
+    },
+    {
+      "id": "code-review-excellence",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/code-review-excellence",
+      "description": "Transform code reviews from gatekeeping to knowledge sharing through constructive feedback, systematic analysis, and collaborative improvement."
+    },
+    {
+      "id": "codebase-cleanup-refactor-clean",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/codebase-cleanup-refactor-clean",
+      "description": "You are a code refactoring expert specializing in clean code principles, SOLID design patterns, and modern software engineering best practices. Analyze and refactor the provided code to improve its quality, maintainability, and performance."
+    },
+    {
+      "id": "error-handling-patterns",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/error-handling-patterns",
+      "description": "Build resilient applications with robust error handling strategies that gracefully handle failures and provide excellent debugging experiences."
+    },
+    {
+      "id": "graphql",
+      "category": "backend",
+      "risk": "safe",
+      "source": "vibeship-spawner-skills (Apache 2.0)",
+      "path": "skills/graphql",
+      "description": "GraphQL gives clients exactly the data they need - no more, no less. One endpoint, typed schema, introspection. But the flexibility that makes it powerful also makes it dangerous. Without proper controls, clients can craft queries that bring down your server."
+    },
+    {
+      "id": "i18n-localization",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/i18n-localization",
+      "description": "Internationalization and localization patterns. Detecting hardcoded strings, managing translations, locale files, RTL support."
+    },
+    {
+      "id": "javascript-testing-patterns",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/javascript-testing-patterns",
+      "description": "Comprehensive guide for implementing robust testing strategies in JavaScript/TypeScript applications using modern testing frameworks and best practices."
+    },
+    {
+      "id": "legacy-modernizer",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/legacy-modernizer",
+      "description": "Refactor legacy codebases, migrate outdated frameworks, and implement gradual modernization. Handles technical debt, dependency updates, and backward compatibility."
+    },
+    {
+      "id": "logic-lens",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/logic-lens",
+      "description": "AI-powered Claude Code skill that performs deep code review using formal logic and reasoning frameworks to detect bugs, anti-patterns, and security risks beyond what linters catch."
+    },
+    {
+      "id": "modern-javascript-patterns",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/modern-javascript-patterns",
+      "description": "Comprehensive guide for mastering modern JavaScript (ES6+) features, functional programming patterns, and best practices for writing clean, maintainable, and performant code."
+    },
+    {
+      "id": "nodejs-backend-patterns",
+      "category": "backend",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/nodejs-backend-patterns",
+      "description": "Comprehensive guidance for building scalable, maintainable, and production-ready Node.js backend applications with modern frameworks, architectural patterns, and best practices."
+    },
+    {
+      "id": "performance-optimizer",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/performance-optimizer",
+      "description": "Identifies and fixes performance bottlenecks in code, databases, and APIs. Measures before and after to prove improvements."
+    },
+    {
+      "id": "tdd",
+      "category": "development",
+      "risk": "safe",
+      "source": "community",
+      "path": "skills/tdd",
+      "description": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests."
+    }
+  ],
+  "files": {
+    "attribution/LICENSE-MICROSOFT": "d9a1b1e30d633d5732ea18e3cba9538d293ebc53e1a9e4e96ab739e0c5c4f1cb",
+    "attribution/microsoft-skills-attribution.json": "52aac77f6b2d1d7543a85cb895b525b8bf0732c37a8459fc2ae190fde96e24c5",
+    "attribution/sources.md": "43fa9e504531ce3b3c5d15c977297bbf71aa63d688e373bba7598229ead7f596",
+    "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
+    "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
+    "skills/api-design-principles/assets/api-design-checklist.md": "ef98cb8910cdc555514198df7becc6de8b04e1a98e2291b1440bc62e14cd07e5",
+    "skills/api-design-principles/assets/rest-api-template.py": "b359cda817740ee2cd3c9a901d7d5a14178cc0e2dcb46b75af053e5cc4d6012c",
+    "skills/api-design-principles/references/graphql-schema-design.md": "0f10cbe2f3d787be9de4ab8dcc88444ac36ab69786973666a229fdbffeb01638",
+    "skills/api-design-principles/references/rest-best-practices.md": "675fbafdd5a6d5ac2c17ab97e17c90aa0a10c2a5608860128a8be14764130fae",
+    "skills/api-design-principles/resources/implementation-playbook.md": "01a77e3f69a3e8d82a5ff49fa8ab1a1d0e16046af21c78f2c800e15e397b2321",
+    "skills/api-design-principles/SKILL.md": "9e3a261c94e6b67e386a0c58532a4aedd924683bb8d6bde6bf90c5337a91195d",
+    "skills/api-endpoint-builder/README.md": "852fe52e2c9834d04b6594a83b073aab82c32a2037c810f54724f9d997680f4a",
+    "skills/api-endpoint-builder/SKILL.md": "bb9f07b95cd6e4da7b97d5c518b66019822f62abecc0b5d7e02c56f64de36fb5",
+    "skills/brooks-lint/SKILL.md": "d9b882fc29e0170303a282bf1aaa1c79439006ff29f8b3803fd06657126c3b84",
+    "skills/code-documentation-code-explain/resources/implementation-playbook.md": "842e3c2822e2635e07aa1133ed5649a8e72a41d1194e245e89220ce8987fb6ea",
+    "skills/code-documentation-code-explain/SKILL.md": "6bd781a98c83a6c075f02245c41e653297dfb0323edfbbe0f839889b9093ebcd",
+    "skills/code-review-excellence/resources/implementation-playbook.md": "ece72677dd719176f7c7b3c06ce59bfb3bbb74c25da471c0788e69bfd776ec13",
+    "skills/code-review-excellence/SKILL.md": "6c9ccf6710c876a04d7605377908a67c50a20781f2c6a1e154c6ab87f15c024f",
+    "skills/codebase-cleanup-refactor-clean/resources/implementation-playbook.md": "ead2ec79c20d786da1e39178f35ee260f056ad74e0c95fd7e8ea76b15b50eb08",
+    "skills/codebase-cleanup-refactor-clean/SKILL.md": "d93b54d154ec8dd98c5938a1b0e56c4cb9fc56f948591e91ace4f7102f81c237",
+    "skills/error-handling-patterns/resources/implementation-playbook.md": "d2dc605ff9520cdd784b30e6ed1f8bbcce3a7ee2f863c4be8f5cdefb6916d7b1",
+    "skills/error-handling-patterns/SKILL.md": "c4b2fbee1a26d446f342d1c6d5d25c1a0352c99422964cba0f449c8dc5a195d9",
+    "skills/graphql/SKILL.md": "84bb2bc31ae4eebce27d974c6655039e3094b8b64b782df53082482cbf458c1d",
+    "skills/i18n-localization/scripts/i18n_checker.py": "a90946f9ffee5fc83b1dbdbd001616eceb299101bf255efaec4601cecf210379",
+    "skills/i18n-localization/SKILL.md": "8e862c5792fdbcd9d9d2de150f975fb26885613ff2227be7453c2fa24b4a3cc8",
+    "skills/javascript-testing-patterns/resources/implementation-playbook.md": "3764b34a43b5e3559e2da6ca9496bf195f2561d93ba024816628048918b05194",
+    "skills/javascript-testing-patterns/SKILL.md": "9aebe35bdcf51c241f71b9989373bd73851fb5d6e282e0f37c1e7beb5f79c9a0",
+    "skills/legacy-modernizer/SKILL.md": "c60ff50ad8fd41f28d230887aa0ba9e98277a82ceb3ffaaf39999532edecdb2f",
+    "skills/logic-lens/SKILL.md": "7cf3ef5f14e3178f988f1aee4bced9a5b3758b1edbe99b81959c996a4377aebd",
+    "skills/modern-javascript-patterns/resources/implementation-playbook.md": "2c64a93c68093a2966eabd368df976532ea0f4e4386b53d6b28ff04b129d60d0",
+    "skills/modern-javascript-patterns/SKILL.md": "47d11a273455900b0e91da878ed7b61a1e0028661933372d159a72694f90c17f",
+    "skills/nodejs-backend-patterns/resources/implementation-playbook.md": "9a375eed368e0e1d8ba4e575415ecc528fe7c0883001b7c83dfee6643d1b8e71",
+    "skills/nodejs-backend-patterns/SKILL.md": "ec798e95704e9789efc5a11561c65e3cf10231a881da4fc467ace1bd4e71e3e2",
+    "skills/performance-optimizer/README.md": "7cf2d6693d07d0fdaab6441642295eb9bd9734e551caff656c138a388bd565b4",
+    "skills/performance-optimizer/SKILL.md": "9e73c4cabe47bee8e76d4391e899d9ff7a5c98fefed62eee18f333d3d7aaa648",
+    "skills/tdd/mocking.md": "3ceb807fdf4a47d6a93d4d9a891e5ba6d362a6247bd08adc451feebfc17361ef",
+    "skills/tdd/refactoring.md": "54fced22dd1911b7094c3fe7979b7c1a40d40be307482c4adf7dc0588f27d6cc",
+    "skills/tdd/SKILL.md": "0eb6630a004ebf6124bc052f2e66d1eea489dedecfbab698bf87c576971c8e20",
+    "skills/tdd/tests.md": "e12182f5c4c6a844b7c6ab4b8d2623b642aaaae5460fe58ed087efd4f3d5fb8a"
+  },
+  "bundleSha256": "f497ec73749f7f63ff2537a1c83787ccc0fd519183845e98845fb4859398fc3e",
+  "licenses": [
+    "MIT",
+    "CC-BY-4.0",
+    "third-party notices in attribution/"
+  ],
+  "workspaceBundleSha256": "2626c5c5f32ff1142dd3676567fe1258ee91d98ac3d925ea08cceb17a36e76d0"
+}

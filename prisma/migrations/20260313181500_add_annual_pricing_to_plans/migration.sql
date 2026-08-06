@@ -1,0 +1,3 @@
+ALTER TABLE "PricingPlan"
+ADD COLUMN "annualPrice" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "annualPriceSuffix" TEXT NOT NULL DEFAULT '/year';

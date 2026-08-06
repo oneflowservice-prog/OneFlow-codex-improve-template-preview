@@ -1,0 +1,5 @@
+ALTER TABLE "Subscription"
+ADD COLUMN "billingInterval" TEXT NOT NULL DEFAULT 'month',
+ADD COLUMN "rewardTokens" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "annualRewardMonthsRemaining" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "nextRewardAt" TIMESTAMP(3);

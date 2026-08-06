@@ -1,0 +1,3 @@
+ALTER TABLE "PricingPlan"
+ADD COLUMN "ctaHref" TEXT,
+ADD COLUMN "isEnterprise" BOOLEAN NOT NULL DEFAULT false;

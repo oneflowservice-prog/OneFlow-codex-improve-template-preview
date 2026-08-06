@@ -1,0 +1,47 @@
+import { revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
+import { getUserBySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth";
+import {
+  getSocialLoginSettings,
+  normalizeSocialLoginSettingsInput,
+  upsertSocialLoginSettings,
+} from "@/lib/social-login-settings";
+
+async function requireAdmin(request: NextRequest) {
+  const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+  const admin = token ? await getUserBySessionToken(token) : null;
+  return admin?.isAdmin ? admin : null;
+}
+
+export async function GET(request: NextRequest) {
+  const admin = await requireAdmin(request);
+
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const settings = await getSocialLoginSettings();
+  return NextResponse.json({ settings });
+}
+
+export async function PUT(request: NextRequest) {
+  const admin = await requireAdmin(request);
+
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const settings = normalizeSocialLoginSettingsInput(
+      await request.json().catch(() => null),
+    );
+    await upsertSocialLoginSettings(settings);
+    revalidateTag("social-login-settings", "max");
+
+    return NextResponse.json({ settings });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Could not save social login settings.";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+}

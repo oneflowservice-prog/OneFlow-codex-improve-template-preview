@@ -1,0 +1,50 @@
+{
+  "repository": "https://github.com/firebase/agent-skills",
+  "release": null,
+  "commit": "538130c39402a40d9c2586ede87def5914641a33",
+  "selectionPolicy": "Web-relevant Firebase subset for Siteliyo shared Firebase: Authentication, Firestore, and Security Rules audit. Setup, hosting/deployment, mobile, Crashlytics, Data Connect, AI Logic, and Remote Config skills are excluded.",
+  "selectedSkills": [
+    {
+      "id": "firebase-auth-basics",
+      "description": "Guide for setting up and using Firebase Authentication. Use this skill when the user's app requires user sign-in, user management, or secure data access using auth rules."
+    },
+    {
+      "id": "firebase-firestore",
+      "description": ">-"
+    },
+    {
+      "id": "firebase-security-rules-auditor",
+      "description": "A skill to evaluate how secure Firestore security rules are. Use this when Firestore security rules are updated to ensure that the generated rules are extremely secure and robust."
+    }
+  ],
+  "files": {
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "skills/firebase-auth-basics/references/client_sdk_android.md": "11a263ef8b62aa236e6cee16cdf9073267a6c6de94e4414b639c48e62bc247a2",
+    "skills/firebase-auth-basics/references/client_sdk_web.md": "d8143ac7989f220baea6ee47764253497ac8de1fcb1097cd832d7a7dece121f8",
+    "skills/firebase-auth-basics/references/flutter_setup.md": "181fdba6d78f2d2da85bfccb30ac560b85c61c55454381763725cfe4f2467110",
+    "skills/firebase-auth-basics/references/ios_setup.md": "440e3788b85de59ef7274d7d5d19b2ea42431a07bc7fd54069b15e451cdce647",
+    "skills/firebase-auth-basics/references/security_rules.md": "eb30222bce2bdcf4343ad771c3231580ba521e78fd86db6110a66597b0cb6df5",
+    "skills/firebase-auth-basics/SKILL.md": "268d5fc074acd818c5f64c2573c6ab0beefc40de77a9283fcef3237df790f878",
+    "skills/firebase-firestore/references/enterprise/android_sdk_usage.md": "186de7d587cb8575ec1b8e730b7b855bf03c47dc3730ae023120e98da37325e1",
+    "skills/firebase-firestore/references/enterprise/data_model.md": "6795131c1ab710d10847aac6a436990a31a39f58e794dc756b6839ee2f3dd552",
+    "skills/firebase-firestore/references/enterprise/flutter_setup.md": "56915ee88796b65656e5dbbf2fce433615231b4705d07e41ebc998e19eef5e8d",
+    "skills/firebase-firestore/references/enterprise/indexes.md": "f9bb09563ebe43e08c5b8d83b8b21a1f7dd7a0baf6aa99e7a172eb74141d61bd",
+    "skills/firebase-firestore/references/enterprise/ios_setup.md": "9e6fc564e0e716aebf451845b1fe5bd64a7ad5348c9d1173c2290c0391268247",
+    "skills/firebase-firestore/references/enterprise/provisioning.md": "33d29697289e80c933dd6af575731aa05b570637bb62173a6c8e2eae69417461",
+    "skills/firebase-firestore/references/enterprise/python_sdk_usage.md": "05a2830c6c843066375a53fd404e69969e252849371dedc65d2b46f1b53c53d1",
+    "skills/firebase-firestore/references/enterprise/security_rules.md": "ef23b72d82a8201de05605099011253dedb5c8ec1229ae0613e928b5c1460d26",
+    "skills/firebase-firestore/references/enterprise/web_sdk_usage.md": "12049e1d0c14ef7a2a33432afcd3c37a83eb6bdbf206d583d24dcd9002ae312f",
+    "skills/firebase-firestore/references/standard/android_sdk_usage.md": "f2ac3c8118a8931b0c19467cfcc225cceded2948a0c756d112809b43da2b1d2f",
+    "skills/firebase-firestore/references/standard/flutter_setup.md": "d1998972e620d06daa2110e57363778adebf183b3e20ca12483e665b1c25161f",
+    "skills/firebase-firestore/references/standard/indexes.md": "3fbe1bff5bd5378a116ac8f32b130c56c64b13a9cc423e6701ade84004c954ad",
+    "skills/firebase-firestore/references/standard/ios_setup.md": "0e327d20a725bfe2dc151b08182540b1f4b208e0119b44b85f680085d628a071",
+    "skills/firebase-firestore/references/standard/provisioning.md": "e46541c64cfcac2a6da9ad647eeafc42a9729d35ce10318ece801828d6f09a8e",
+    "skills/firebase-firestore/references/standard/security_rules.md": "ef23b72d82a8201de05605099011253dedb5c8ec1229ae0613e928b5c1460d26",
+    "skills/firebase-firestore/references/standard/web_sdk_usage.md": "1cf1a78158a8be6e02bbf43d8f33bb4b15d88803924ba88e624e762f5e57e15a",
+    "skills/firebase-firestore/SKILL.md": "6ffca8a8835056793cdda49ce7c5addd23cf2a8a5b327e10108b6f0e2c7a4227",
+    "skills/firebase-security-rules-auditor/SKILL.md": "41ce481ad48b3565107c883feb28870f53f0ab2edb6aad9cad1a8ea780d66670"
+  },
+  "bundleSha256": "8a855793b95ac249fb90adc234fc3b2480ead4b0d16aadb25c933d036cebb533",
+  "workspaceBundleSha256": "c5bfc5289728899fa20ba9604c51bc5d25434e992adafa52bd312c11823dd003",
+  "license": "Apache-2.0"
+}

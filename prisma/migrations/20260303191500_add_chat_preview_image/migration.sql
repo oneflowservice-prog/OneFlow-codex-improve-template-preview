@@ -1,0 +1,2 @@
+-- This migration was missing from source control.
+-- Keep as a no-op so migration history stays consistent across environments.

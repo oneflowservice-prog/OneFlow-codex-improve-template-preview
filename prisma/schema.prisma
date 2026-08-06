@@ -1,0 +1,882 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GeneratedApp {
+  id        String   @id @default(nanoid(5))
+  model     String
+  prompt    String
+  code      String
+  createdAt DateTime @default(now())
+
+  @@index([id])
+}
+
+model Chat {
+  id                       String              @id @default(nanoid(16))
+  model                    String
+  quality                  String
+  prompt                   String
+  title                    String
+  previewImageUrl          String?
+  vercelProjectId          String?
+  vercelProjectName        String?
+  vercelDeploymentId       String?
+  vercelDeploymentUrl      String?
+  vercelDeploymentStatus   String?
+  vercelDeploymentReadyAt  DateTime?
+  netlifySiteId            String?
+  netlifySiteName          String?
+  netlifyDeployId          String?
+  netlifyDeployUrl         String?
+  netlifyDeployStatus      String?
+  netlifyDeployReadyAt     DateTime?
+  githubRepoOwner          String?
+  githubRepoName           String?
+  githubRepoUrl            String?
+  githubDefaultBranch      String?
+  githubLastPushedAt       DateTime?
+  githubPreferredRepoName  String?
+  githubRepoVisibility     String?
+  githubAutoPushEnabled    Boolean             @default(false)
+  supabaseProjectRef       String?
+  supabaseProjectName      String?
+  supabaseProjectUrl       String?
+  supabaseOrganizationSlug String?
+  projectEnvVars           Json?
+  isTemplate               Boolean             @default(false)
+  llamaCoderVersion        String              @default("v2")
+  shadcn                   Boolean
+  userId                   String?
+  teamId                   String?
+  user                     User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                     Team?               @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  projectLikes             ProjectLike[]
+  messages                 Message[]
+  projectLogs              ProjectLog[]
+  codingJobs               CodingJob[]
+  folderLinks              ProjectFolderChat[]
+  builderWorkspaceId       String?             @unique
+  openCodeSessionId        String?             @unique
+  workspaceRevision        Int                 @default(0)
+  designAuthority          String?
+  createdAt                DateTime            @default(now())
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([teamId])
+}
+
+model CodingJob {
+  id                String        @id @default(cuid())
+  chatId            String
+  chat              Chat          @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  requestedByUserId String
+  requestedBy       User          @relation(fields: [requestedByUserId], references: [id], onDelete: Cascade)
+  messageId         String?
+  message           Message?      @relation(fields: [messageId], references: [id], onDelete: SetNull)
+  status            String        @default("queued")
+  prompt            String        @db.Text
+  model             String?
+  workspaceId       String
+  openCodeSessionId String?
+  workspaceRevision Int           @default(0)
+  eventSequence     Int           @default(0)
+  error             Json?
+  cancelRequestedAt DateTime?
+  startedAt         DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  events            CodingEvent[]
+
+  @@index([chatId, createdAt])
+  @@index([requestedByUserId, createdAt])
+  @@index([status, createdAt])
+}
+
+model CodingEvent {
+  id        String    @id @default(cuid())
+  jobId     String
+  job       CodingJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  sequence  Int
+  type      String
+  payload   Json?
+  createdAt DateTime  @default(now())
+
+  @@unique([jobId, sequence])
+  @@index([jobId, createdAt])
+  @@index([type, createdAt])
+}
+
+model ProjectLog {
+  id             String   @id @default(cuid())
+  chatId         String
+  chat           Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  source         String   @default("netlify")
+  level          String?
+  requestMethod  String?
+  requestPath    String?
+  responseStatus Int?
+  responseSize   Int?
+  errorMessage   String?  @db.Text
+  message        String?  @db.Text
+  metadata       Json?
+  timestamp      DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  @@index([chatId, timestamp])
+  @@index([source, timestamp])
+}
+
+model Agent {
+  id                       String         @id @default(nanoid(16))
+  title                    String
+  avatarUrl                String?
+  prompt                   String         @db.Text
+  model                    String
+  plan                     Json
+  systemPrompt             String?        @db.Text
+  publishedAt              DateTime?
+  publishedMessagePosition Int?
+  isTemplate               Boolean        @default(false)
+  userId                   String?
+  teamId                   String?
+  user                     User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                     Team?          @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  messages                 AgentMessage[]
+  runs                     AgentRun[]
+  channels                 AgentChannel[]
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([teamId])
+}
+
+model AgentChannel {
+  id                        String                @id @default(nanoid(16))
+  agentId                   String
+  agent                     Agent                 @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  provider                  String
+  status                    String                @default("connected")
+  discordApplicationId      String?
+  discordPublicKey          String?
+  discordBotTokenEncrypted  String?               @db.Text
+  discordGuildId            String?
+  discordBotUserId          String?
+  discordBotUsername        String?
+  discordCommandId          String?
+  telegramBotTokenEncrypted String?               @db.Text
+  telegramBotUsername       String?
+  telegramBotId             String?
+  telegramWebhookSecret     String?
+  lastConnectedAt           DateTime?
+  lastValidatedAt           DateTime?
+  lastError                 String?               @db.Text
+  metadata                  Json?
+  messages                  AgentChannelMessage[]
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+
+  @@unique([agentId, provider])
+  @@index([provider, discordApplicationId])
+  @@index([provider, telegramBotId])
+  @@index([agentId, createdAt])
+}
+
+model AgentChannelMessage {
+  id                String       @id @default(nanoid(16))
+  agentChannelId    String
+  agentChannel      AgentChannel @relation(fields: [agentChannelId], references: [id], onDelete: Cascade)
+  externalMessageId String?
+  externalUserId    String?
+  externalChannelId String?
+  role              String
+  content           String       @db.Text
+  metadata          Json?
+  createdAt         DateTime     @default(now())
+
+  @@index([agentChannelId, createdAt])
+  @@index([externalUserId, createdAt])
+}
+
+model AgentRun {
+  id          String    @id @default(nanoid(16))
+  agentId     String
+  agent       Agent     @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  status      String
+  input       Json?
+  steps       Json
+  result      Json?
+  error       String?   @db.Text
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([agentId, startedAt])
+  @@index([status, startedAt])
+}
+
+model AgentMessage {
+  id        String   @id @default(nanoid(16))
+  role      String
+  content   String   @db.Text
+  metadata  Json?
+  agentId   String
+  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  position  Int
+  createdAt DateTime @default(now())
+
+  @@index([agentId])
+  @@index([agentId, createdAt])
+}
+
+model Message {
+  id         String      @id @default(nanoid(16))
+  role       String
+  content    String
+  files      Json?
+  metadata   Json?
+  chatId     String
+  chat       Chat        @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  codingJobs CodingJob[]
+  position   Int
+  createdAt  DateTime    @default(now())
+
+  @@index([chatId])
+  @@index([chatId, createdAt])
+}
+
+model User {
+  id                       String               @id @default(cuid())
+  email                    String               @unique
+  referralCode             String?              @unique
+  referralsSent            Referral[]           @relation("ReferralReferrer")
+  referralSignup           Referral?            @relation("ReferralReferred")
+  isAdmin                  Boolean              @default(false)
+  bannedAt                 DateTime?
+  username                 String?              @unique
+  name                     String?
+  location                 String?
+  avatarUrl                String?
+  bannerUrl                String?
+  passwordHash             String?
+  chatSuggestions          Boolean              @default(true)
+  generationSound          String               @default("first_generation")
+  autoAcceptInvitations    Boolean              @default(false)
+  pushNotifications        Boolean              @default(false)
+  pushOnAgentAction        Boolean              @default(false)
+  lastReauthenticatedAt    DateTime?
+  vercelAuthSub            String?              @unique
+  vercelAvatarUrl          String?
+  vercelAccessToken        String?
+  vercelTeamId             String?
+  vercelScope              String?
+  vercelConnectedAt        DateTime?
+  netlifyAccessToken       String?
+  netlifyScope             String?
+  netlifyConnectedAt       DateTime?
+  supabaseAccessToken      String?
+  supabaseRefreshToken     String?
+  supabaseScope            String?
+  supabaseTokenExpiresAt   DateTime?
+  supabaseConnectedAt      DateTime?
+  googleAuthSub            String?              @unique
+  googleAvatarUrl          String?
+  googleConnectedAt        DateTime?
+  githubLogin              String?
+  githubAvatarUrl          String?
+  githubAccessToken        String?
+  githubScope              String?
+  githubConnectedAt        DateTime?
+  creditBalance            Int                  @default(0)
+  autoTopUpEnabled         Boolean              @default(false)
+  autoTopUpThreshold       Int?
+  autoTopUpTarget          Int?
+  autoTopUpPaymentMethodId String?
+  chats                    Chat[]
+  agents                   Agent[]
+  followers                UserFollow[]         @relation("UserFollowers")
+  following                UserFollow[]         @relation("UserFollowing")
+  projectLikes             ProjectLike[]
+  notifications            Notification[]       @relation("UserNotifications")
+  notificationActors       Notification[]       @relation("NotificationActor")
+  folders                  ProjectFolder[]
+  workspaceSkills          WorkspaceSkill[]
+  subscriptions            Subscription[]
+  billingTransactions      BillingTransaction[]
+  codingJobs               CodingJob[]
+  paymentMethods           UserPaymentMethod[]
+  popupDismissals          UserPopupDismissal[]
+  ownedTeam                Team?                @relation("TeamOwner")
+  teamMemberships          TeamMembership[]
+  sentTeamInvites          TeamInvite[]         @relation("TeamInviteSender")
+  receivedTeamInvites      TeamInvite[]         @relation("TeamInviteRecipient")
+  sessions                 Session[]
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+}
+
+model WorkspaceSkill {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  description  String   @default("")
+  instructions String   @db.Text
+  source       String   @default("manual")
+  sourceUrl    String?
+  enabled      Boolean  @default(true)
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId, enabled, createdAt])
+  @@index([userId, createdAt])
+}
+
+model GlobalSkill {
+  id           String   @id @default(cuid())
+  name         String
+  description  String   @default("")
+  instructions String   @db.Text
+  source       String   @default("manual")
+  sourceUrl    String?
+  enabled      Boolean  @default(true)
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([enabled, createdAt])
+  @@index([createdAt])
+}
+
+model AppPopup {
+  id          String               @id @default(cuid())
+  title       String
+  body        String
+  ctaLabel    String               @default("Let’s get started")
+  ctaUrl      String?
+  imageUrl    String?
+  videoUrl    String?
+  target      String               @default("logged_in")
+  isActive    Boolean              @default(true)
+  dismissible Boolean              @default(true)
+  sortOrder   Int                  @default(0)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  dismissals  UserPopupDismissal[]
+
+  @@index([target, isActive, sortOrder, createdAt])
+}
+
+model UserPopupDismissal {
+  id        String   @id @default(cuid())
+  userId    String
+  popupId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  popup     AppPopup @relation(fields: [popupId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, popupId])
+  @@index([userId, createdAt])
+  @@index([popupId, createdAt])
+}
+
+model Team {
+  id          String           @id @default(cuid())
+  name        String
+  ownerUserId String           @unique
+  owner       User             @relation("TeamOwner", fields: [ownerUserId], references: [id], onDelete: Cascade)
+  memberships TeamMembership[]
+  invites     TeamInvite[]
+  chats       Chat[]
+  agents      Agent[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([createdAt])
+}
+
+model TeamMembership {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      String   @default("member")
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, userId])
+  @@index([userId, createdAt])
+}
+
+model TeamInvite {
+  id              String   @id @default(cuid())
+  teamId          String
+  email           String
+  role            String   @default("member")
+  status          String   @default("pending")
+  invitedByUserId String
+  invitedUserId   String?
+  team            Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  invitedBy       User     @relation("TeamInviteSender", fields: [invitedByUserId], references: [id], onDelete: Cascade)
+  invitedUser     User?    @relation("TeamInviteRecipient", fields: [invitedUserId], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([teamId, email])
+  @@index([email, status, createdAt])
+  @@index([invitedByUserId, createdAt])
+  @@index([invitedUserId, createdAt])
+}
+
+model UserFollow {
+  followerId  String
+  followingId String
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@id([followerId, followingId])
+  @@index([followingId, createdAt])
+}
+
+model ProjectLike {
+  userId    String
+  chatId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, chatId])
+  @@index([chatId, createdAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  actorId   String?
+  type      String
+  title     String
+  body      String
+  linkUrl   String?
+  metadata  Json?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  actor     User?     @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([userId, readAt, createdAt])
+  @@index([actorId, createdAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model ProjectFolder {
+  id        String              @id @default(cuid())
+  name      String
+  userId    String
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chats     ProjectFolderChat[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId, createdAt])
+}
+
+model ProjectFolderChat {
+  folderId  String
+  chatId    String
+  folder    ProjectFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  chat      Chat          @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+
+  @@id([folderId, chatId])
+  @@index([chatId])
+}
+
+model PricingPlan {
+  id                   String   @id @default(cuid())
+  slug                 String   @unique
+  name                 String
+  description          String?
+  monthlyPrice         Int
+  annualPrice          Int      @default(0)
+  rewardTokens         Int      @default(0)
+  rewardCadence        String   @default("monthly")
+  monthlyPriceSuffix   String   @default("/month")
+  annualPriceSuffix    String   @default("/year")
+  ctaLabel             String   @default("Select Plan")
+  ctaHref              String?
+  isEnterprise         Boolean  @default(false)
+  highlightLabel       String?
+  isPopular            Boolean  @default(false)
+  isActive             Boolean  @default(true)
+  teamAccessEnabled    Boolean  @default(false)
+  githubAccessEnabled  Boolean  @default(true)
+  codeDownloadEnabled  Boolean  @default(true)
+  codeViewerEnabled    Boolean  @default(true)
+  agentCreationEnabled Boolean  @default(true)
+  agentLimit           Int?
+  sortOrder            Int      @default(0)
+  features             String[] @default([])
+  allowedModelValues   String[] @default([])
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+model Subscription {
+  id                          String               @id @default(cuid())
+  userId                      String
+  user                        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider                    String?
+  providerCustomerId          String?
+  providerSubscriptionId      String?              @unique
+  planSlug                    String
+  planName                    String
+  billingInterval             String               @default("month")
+  monthlyPrice                Int
+  rewardTokens                Int                  @default(0)
+  annualRewardMonthsRemaining Int                  @default(0)
+  nextRewardAt                DateTime?
+  status                      String               @default("active")
+  startedAt                   DateTime             @default(now())
+  endedAt                     DateTime?
+  createdAt                   DateTime             @default(now())
+  updatedAt                   DateTime             @updatedAt
+  transactions                BillingTransaction[]
+
+  @@index([userId])
+  @@index([status, startedAt])
+}
+
+model BillingTransaction {
+  id                String        @id @default(cuid())
+  userId            String?
+  user              User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  subscriptionId    String?
+  subscription      Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  provider          String?
+  providerReference String?       @unique
+  type              String
+  direction         String        @default("income")
+  status            String        @default("completed")
+  amount            Int
+  description       String?
+  metadata          Json?
+  createdAt         DateTime      @default(now())
+
+  @@index([createdAt])
+  @@index([status, direction])
+  @@index([userId])
+  @@index([subscriptionId])
+}
+
+model UserPaymentMethod {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider       String   @default("card")
+  brand          String
+  last4          String
+  expMonth       Int
+  expYear        Int
+  cardholderName String
+  country        String?
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([userId, isDefault])
+}
+
+model Referral {
+  id                    String    @id @default(cuid())
+  referrerUserId        String
+  referredUserId        String    @unique
+  referralCode          String
+  status                String    @default("signed_up")
+  rewardCredits         Int       @default(100)
+  referrerRewardCredits Int       @default(0)
+  referredRewardCredits Int       @default(0)
+  rewardedAt            DateTime?
+  referrerRewardedAt    DateTime?
+  referredRewardedAt    DateTime?
+  qualifiedAt           DateTime?
+  metadata              Json?
+  createdAt             DateTime  @default(now())
+  referrer              User      @relation("ReferralReferrer", fields: [referrerUserId], references: [id], onDelete: Cascade)
+  referred              User      @relation("ReferralReferred", fields: [referredUserId], references: [id], onDelete: Cascade)
+
+  @@index([referrerUserId, createdAt])
+  @@index([status, createdAt])
+}
+
+model ReferralSettings {
+  id                         String   @id
+  isEnabled                  Boolean  @default(true)
+  showBuyCreditsButton       Boolean  @default(true)
+  showShareOneflowButton     Boolean  @default(true)
+  showAffiliateProgramButton Boolean  @default(true)
+  affiliateProgramUrl        String   @default("")
+  signupRewardCredits        Int      @default(0)
+  referrerRewardCredits      Int      @default(100)
+  rewardTrigger              String   @default("first_payment")
+  cookieDays                 Int      @default(30)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                       String   @id
+  siteName                 String
+  siteDescription          String
+  logoUrl                  String?
+  lightModeLogoUrl         String?
+  darkModeLogoUrl          String?
+  faviconUrl               String?
+  customJs                 String?
+  authHeroBadge            String   @default("Y Combinator S24")
+  authHeroTitle            String   @default("Built for teams that ship fast.")
+  authHeroDescription      String   @default("Collaborate in real time, refine ideas instantly, and turn prompts into polished product experiences.")
+  authHeroImageUrl         String?
+  adminSignupEnabled       Boolean  @default(true)
+  socialAuthButtonsEnabled Boolean  @default(true)
+  darkThemePreset          String   @default("siteliyo")
+  themeConfig              Json?
+  homepageChrome           Json?
+  models                   Json?
+  modelLabelMode           String   @default("admin")
+  agentBuilderModel        String   @default("modelslab/claude-3.5-sonnet")
+  agentRuntimeModel        String   @default("modelslab/claude-3.5-sonnet")
+  openCodeDesignAuthorityMode String @default("auto")
+  metaTitle                String
+  metaDescription          String
+  metaKeywords             String[] @default([])
+  ogImageUrl               String?
+  twitterHandle            String?
+  translations             Json?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model PaymentSettings {
+  id                     String   @id
+  stripeEnabled          Boolean  @default(true)
+  paypalEnabled          Boolean  @default(false)
+  paypalCardEnabled      Boolean  @default(false)
+  paypalEnvironment      String   @default("sandbox")
+  paypalSandboxClientId  String?
+  paypalSandboxSecret    String?
+  paypalLiveClientId     String?
+  paypalLiveSecret       String?
+  paypalSandboxProductId String?
+  paypalLiveProductId    String?
+  paypalPlanCache        Json?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model SocialLoginSettings {
+  id                 String   @id
+  socialLoginEnabled Boolean  @default(false)
+  githubEnabled      Boolean  @default(false)
+  githubClientId     String?
+  githubClientSecret String?
+  googleEnabled      Boolean  @default(false)
+  googleClientId     String?
+  googleClientSecret String?
+  appleEnabled       Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model SitePage {
+  slug         String   @id
+  title        String
+  summary      String
+  content      String
+  translations Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BlogPost {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  category     String
+  image        String
+  author       String
+  readTime     String
+  date         String
+  excerpt      String?
+  content      String?  @db.Text
+  translations Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ContactRequest {
+  id          String   @id @default(cuid())
+  type        String
+  ui          String   @default("default")
+  name        String
+  email       String
+  subject     String
+  message     String   @db.Text
+  emailStatus String   @default("pending")
+  emailError  String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type, createdAt])
+  @@index([email, createdAt])
+  @@index([createdAt])
+}
+
+model AiRagSettings {
+  id                    String   @id
+  promptMode            String   @default("builtin")
+  mainCodingPrompt      String
+  claudeCodingPrompt    String
+  retrievalEnabled      Boolean  @default(true)
+  maxDocuments          Int      @default(3)
+  maxDocumentCharacters Int      @default(1200)
+  documents             Json?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model StorageSettings {
+  id                String   @id
+  cloudinaryEnabled Boolean  @default(false)
+  cloudName         String?
+  apiKey            String?
+  apiSecret         String?
+  defaultFolder     String   @default("admin-uploads")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AiProviderSettings {
+  id               String   @id
+  anthropicApiKey  String?
+  googleApiKey     String?
+  nvidiaApiKey     String?
+  novitaApiKey     String?
+  openAiApiKey     String?
+  openRouterApiKey String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model SmtpSettings {
+  id          String   @id
+  smtpEnabled Boolean  @default(false)
+  host        String?
+  port        Int      @default(587)
+  secure      Boolean  @default(false)
+  username    String?
+  password    String?
+  fromEmail   String?
+  fromName    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FileAsset {
+  id               String   @id @default(cuid())
+  userId           String?
+  storageProvider  String   @default("cloudinary")
+  publicId         String   @unique
+  resourceType     String
+  source           String   @default("upload")
+  title            String?
+  format           String?
+  bytes            Int?
+  width            Int?
+  height           Int?
+  durationSeconds  Float?
+  originalFilename String?
+  folder           String?
+  secureUrl        String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([resourceType, createdAt])
+  @@index([userId, createdAt])
+}
+
+// ============================================================================
+// Discord Logger - Log Storage
+// ============================================================================
+
+model DiscordLog {
+  id          String   @id @default(cuid())
+  eventId     String   @unique
+  category    String   // authentication, users, ai, billing, etc.
+  eventType   String   // login, register, payment_success, etc.
+  eventTitle  String
+  severity    String   // success, warning, error, info
+  success     Boolean?
+
+  // User context
+  userId      String?
+  username    String?
+  email       String?
+  ipAddress   String?
+  userAgent   String?  @db.Text
+  device      String?
+  browser     String?
+  os          String?
+  country     String?
+  city        String?
+
+  // Event data
+  metadata    Json?
+  footer      String?
+
+  // Discord delivery
+  channelName String?
+  delivered   Boolean  @default(false)
+  deliveredAt DateTime?
+  retryCount  Int      @default(0)
+  lastError   String?  @db.Text
+
+  // Timestamps
+  timestamp   DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([category, timestamp])
+  @@index([eventType, timestamp])
+  @@index([severity, timestamp])
+  @@index([userId, timestamp])
+  @@index([delivered, createdAt])
+  @@index([timestamp])
+}

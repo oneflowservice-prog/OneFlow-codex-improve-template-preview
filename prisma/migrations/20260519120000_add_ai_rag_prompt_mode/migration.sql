@@ -1,0 +1,2 @@
+ALTER TABLE "AiRagSettings"
+ADD COLUMN IF NOT EXISTS "promptMode" TEXT NOT NULL DEFAULT 'builtin';

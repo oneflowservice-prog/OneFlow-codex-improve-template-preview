@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cynone Builder Dokploy Installation</title>
+    <style>
+      :root {
+        --bg: #f7f4ee;
+        --surface: #ffffff;
+        --text: #172033;
+        --muted: #5c6678;
+        --accent: #2563eb;
+        --accent-soft: #e8efff;
+        --border: #d9deea;
+        --code-bg: #111827;
+        --code-text: #edf2ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.65;
+      }
+
+      .page {
+        width: min(1040px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 56px;
+      }
+
+      header {
+        padding: 34px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1.15;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 3.8rem);
+        letter-spacing: -0.03em;
+      }
+
+      h2 {
+        margin-top: 42px;
+        font-size: 1.6rem;
+      }
+
+      h3 {
+        margin-top: 26px;
+        font-size: 1.1rem;
+      }
+
+      p {
+        margin: 12px 0 0;
+        color: var(--muted);
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 18px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        color: var(--accent);
+        background: var(--accent-soft);
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 24px;
+      }
+
+      .card,
+      section {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .card strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      section {
+        margin-top: 18px;
+        padding: 26px;
+      }
+
+      ol,
+      ul {
+        margin: 12px 0 0;
+        padding-left: 22px;
+        color: var(--muted);
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      code {
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: #edf0f6;
+        color: #172033;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 0.92em;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 16px 0 0;
+        padding: 18px;
+        border-radius: 14px;
+        background: var(--code-bg);
+        color: var(--code-text);
+      }
+
+      pre code {
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+      }
+
+      .note {
+        margin-top: 16px;
+        padding: 14px 16px;
+        border-left: 4px solid var(--accent);
+        border-radius: 12px;
+        background: var(--accent-soft);
+        color: #1d3f8f;
+      }
+
+      .warning {
+        border-left-color: #dc2626;
+        background: #fff1f2;
+        color: #9f1239;
+      }
+
+      @media (max-width: 760px) {
+        header,
+        section {
+          padding: 22px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <span class="pill">Dokploy deployment guide</span>
+        <h1>Install Cynone Builder on Dokploy</h1>
+        <p>
+          This guide shows how to deploy the Cynone Builder Go service as an
+          external preview builder for Siteliyo. The service receives generated
+          app files, runs the build, and returns the build output for preview.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <strong>Runtime</strong>
+            <p>Go HTTP server plus Node.js/npm for workspace builds.</p>
+          </div>
+          <div class="card">
+            <strong>Port</strong>
+            <p>Default service port is <code>8080</code>.</p>
+          </div>
+          <div class="card">
+            <strong>Storage</strong>
+            <p>Persist <code>/app/storage</code> for workspaces and logs.</p>
+          </div>
+        </div>
+      </header>
+
+      <section id="requirements">
+        <h2>Requirements</h2>
+        <ul>
+          <li>A Dokploy server with Docker enabled.</li>
+          <li>A domain or subdomain for the builder, for example <code>builder.example.com</code>.</li>
+          <li>The Cynone Builder folder from the package.</li>
+          <li>A strong secret value for <code>WEBBY_KEY</code>.</li>
+          <li>At least 2 CPU and 4 GB RAM. More is better for concurrent builds.</li>
+        </ul>
+        <div class="note warning">
+          The builder runs <code>npm install</code> and <code>npm run build</code>
+          inside generated workspaces. Do not deploy it on a very small server.
+        </div>
+      </section>
+
+      <section id="prepare">
+        <h2>Prepare The Builder Files</h2>
+        <p>
+          Use the Cynone Builder directory as the deployment source. If you are
+          deploying from Git, place these files in a repository:
+        </p>
+        <pre><code>Builder/
+  prebuilt/
+    cynone-builder-linux
+    prompts/
+  Dockerfile
+  docker-compose.yml</code></pre>
+        <p>
+          If you prefer building from Go source, use the <code>src</code>
+          directory instead. The prebuilt binary path is simpler for Dokploy.
+        </p>
+      </section>
+
+      <section id="dockerfile">
+        <h2>Create Dockerfile</h2>
+        <p>
+          Create a file named <code>Dockerfile</code> in the Builder directory:
+        </p>
+        <pre><code>FROM node:22-bookworm
+
+WORKDIR /app
+
+COPY prebuilt/cynone-builder-linux /usr/local/bin/cynone-builder
+COPY prebuilt/prompts ./prompts
+
+RUN chmod +x /usr/local/bin/cynone-builder \
+  &amp;&amp; mkdir -p /app/storage/workspaces /app/storage/logs
+
+EXPOSE 8080
+
+CMD ["cynone-builder"]</code></pre>
+        <div class="note">
+          Node.js is required because Cynone Builder runs npm commands while
+          building preview workspaces.
+        </div>
+      </section>
+
+      <section id="compose">
+        <h2>Create docker-compose.yml</h2>
+        <p>
+          Create a file named <code>docker-compose.yml</code> beside the
+          Dockerfile:
+        </p>
+        <pre><code>services:
+  cynone-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      WEBBY_HOST: 0.0.0.0
+      WEBBY_PORT: 8080
+      WEBBY_KEY: ${WEBBY_KEY}
+    ports:
+      - "8080:8080"
+    volumes:
+      - webby_builder_storage:/app/storage
+    restart: unless-stopped
+
+volumes:
+  webby_builder_storage:</code></pre>
+        <p>
+          Dokploy supports Docker Compose deployments and Docker named volumes.
+          A named volume keeps generated workspaces and logs across redeploys.
+        </p>
+      </section>
+
+      <section id="dokploy">
+        <h2>Deploy In Dokploy</h2>
+        <ol>
+          <li>Open Dokploy and create a new Docker Compose project.</li>
+          <li>Connect the Git repository or upload/provide the Compose source.</li>
+          <li>Set the compose file path to <code>docker-compose.yml</code>.</li>
+          <li>Add an environment variable named <code>WEBBY_KEY</code>.</li>
+          <li>Use a long random value for <code>WEBBY_KEY</code>.</li>
+          <li>Deploy the service.</li>
+          <li>Open the Dokploy logs and confirm the builder starts on port <code>8080</code>.</li>
+        </ol>
+        <pre><code>WEBBY_KEY=replace-with-a-long-random-secret</code></pre>
+      </section>
+
+      <section id="domain">
+        <h2>Attach A Domain</h2>
+        <ol>
+          <li>In Dokploy, open the Cynone Builder service.</li>
+          <li>Add a domain such as <code>builder.example.com</code>.</li>
+          <li>Point the DNS record to your Dokploy server.</li>
+          <li>Enable HTTPS/SSL from Dokploy.</li>
+          <li>Test the root URL in your browser.</li>
+        </ol>
+        <p>
+          The root endpoint should return a small JSON response with the builder
+          version and session count.
+        </p>
+      </section>
+
+      <section id="siteliyo">
+        <h2>Connect It To Siteliyo</h2>
+        <ol>
+          <li>Open Siteliyo admin.</li>
+          <li>Go to <code>/admin/dashboard/preview</code>.</li>
+          <li>Select <code>Cynone Builder</code> as the preview runtime.</li>
+          <li>Set Builder URL to your Dokploy domain, for example <code>https://builder.example.com</code>.</li>
+          <li>Set Server key to the same value as <code>WEBBY_KEY</code>.</li>
+          <li>Save the settings.</li>
+          <li>Open a generated project preview and confirm the iframe builds through Cynone Builder.</li>
+        </ol>
+      </section>
+
+      <section id="api">
+        <h2>Required API Endpoint</h2>
+        <p>
+          Siteliyo expects the builder to expose this endpoint:
+        </p>
+        <pre><code>POST /api/import-workspace/:workspace_id</code></pre>
+        <p>
+          This endpoint imports the complete generated workspace before Siteliyo
+          calls the existing Webby build endpoints:
+        </p>
+        <pre><code>POST /api/build-workspace/:workspace_id
+GET  /api/build-output-workspace/:workspace_id</code></pre>
+        <div class="note">
+          If you use the patched Builder folder from this setup, the import
+          endpoint is already added. If you deploy a clean Webby copy, add that
+          endpoint first or previews will fail with an import-workspace error.
+        </div>
+      </section>
+
+      <section id="test">
+        <h2>Quick Test</h2>
+        <p>
+          After deployment, test that the service is reachable:
+        </p>
+        <pre><code>curl https://builder.example.com/</code></pre>
+        <p>
+          To test authenticated API access, send the key header:
+        </p>
+        <pre><code>curl -H "X-Server-Key: your-secret-key" \
+  https://builder.example.com/api/workspaces</code></pre>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        <h3>Builder says key is required</h3>
+        <p>
+          Add <code>WEBBY_KEY</code> in Dokploy and redeploy.
+        </p>
+
+        <h3>npm command not found</h3>
+        <p>
+          Use the Dockerfile above. It is based on <code>node:22-bookworm</code>
+          so npm and npx are available.
+        </p>
+
+        <h3>Builds are slow or fail randomly</h3>
+        <p>
+          Increase CPU and memory. Preview builds install dependencies and can
+          use a lot of memory.
+        </p>
+
+        <h3>Previews disappear after redeploy</h3>
+        <p>
+          Make sure <code>/app/storage</code> is mounted as a persistent volume.
+        </p>
+
+        <h3>Siteliyo cannot connect</h3>
+        <p>
+          Confirm the Builder URL uses HTTPS, the domain points to Dokploy, and
+          the Server key matches <code>WEBBY_KEY</code>.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

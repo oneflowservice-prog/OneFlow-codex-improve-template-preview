@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "node",
+  "packages": {
+    "node": "22"
+  },
+  "caches": {
+    "pnpm-store": {
+      "directory": "/root/.local/share/pnpm/store",
+      "type": "shared"
+    },
+    "next-cache": {
+      "directory": ".next/cache",
+      "type": "shared"
+    }
+  },
+  "steps": {
+    "install": {
+      "caches": [
+        "pnpm-store"
+      ],
+      "commands": [
+        "..."
+      ]
+    },
+    "build": {
+      "caches": [
+        "pnpm-store",
+        "next-cache"
+      ],
+      "commands": [
+        {
+          "cmd": "node --version && pnpm --version",
+          "customName": "Show Node and pnpm versions"
+        },
+        "..."
+      ],
+      "deployOutputs": [
+        {
+          "include": [
+            ".next/standalone"
+          ]
+        }
+      ]
+    }
+  },
+  "deploy": {
+    "startCommand": "node .next/standalone/server.js",
+    "variables": {
+      "NODE_ENV": "production",
+      "HOSTNAME": "0.0.0.0",
+      "NODE_OPTIONS": "--max-old-space-size=4096",
+      "NEXT_TELEMETRY_DISABLED": "1"
+    }
+  }
+}

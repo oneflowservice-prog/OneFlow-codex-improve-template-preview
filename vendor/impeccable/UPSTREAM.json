@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/pbakaus/impeccable",
+  "commit": "4d849eb75f216109ea7053ed21530a11fafcc786",
+  "packageVersion": "3.2.1",
+  "skillVersion": "3.9.1",
+  "bundleSha256": "8a5b2a5bf284b5ca6f599d5de3ad46031eaadb8f62e331ac659f53edad5b244b",
+  "sourcePath": ".opencode/skills/impeccable",
+  "license": "Apache-2.0"
+}

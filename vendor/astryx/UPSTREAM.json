@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/facebook/astryx",
+  "commit": "ede1ea177d3edaa97766bf0e05d303360273ea35",
+  "packageVersion": "0.1.8",
+  "skillVersion": "0.1.8",
+  "bundleSha256": "54c211972abea483f63f1336b7a5c343c58717b979d4457c07eee8827fd38e69",
+  "sourcePath": "opencode/.opencode/skills/astryx",
+  "license": "MIT"
+}

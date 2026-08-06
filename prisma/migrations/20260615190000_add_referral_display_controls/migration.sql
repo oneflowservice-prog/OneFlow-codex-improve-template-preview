@@ -1,0 +1,5 @@
+ALTER TABLE "ReferralSettings"
+  ADD COLUMN IF NOT EXISTS "showBuyCreditsButton" BOOLEAN NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS "showShareOneflowButton" BOOLEAN NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS "showAffiliateProgramButton" BOOLEAN NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS "affiliateProgramUrl" TEXT NOT NULL DEFAULT '';

@@ -1,0 +1,3 @@
+-- This migration name is preserved to keep Prisma migration history intact.
+-- Community visibility is now driven by SiteSettings.homepageChrome.communityProjectIds,
+-- so there is no schema change to apply here.

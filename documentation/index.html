@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coddy Documentation</title>
+    <style>
+      :root {
+        --bg: #f4efe7;
+        --surface: rgba(255, 252, 247, 0.88);
+        --surface-strong: #fffaf3;
+        --sidebar: #1d2a3a;
+        --sidebar-muted: rgba(230, 237, 243, 0.72);
+        --text: #1a2230;
+        --muted: #586477;
+        --accent: #c55f2d;
+        --accent-soft: rgba(197, 95, 45, 0.12);
+        --border: rgba(26, 34, 48, 0.12);
+        --shadow: 0 24px 60px rgba(35, 30, 24, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(197, 95, 45, 0.2), transparent 28%),
+          linear-gradient(180deg, #fbf7f0 0%, var(--bg) 100%);
+      }
+
+      .layout {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 290px 1fr;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 32px 24px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent),
+          var(--sidebar);
+        color: white;
+      }
+
+      .sidebar h1 {
+        margin: 0 0 10px;
+        font-size: 1.9rem;
+        line-height: 1.05;
+      }
+
+      .sidebar p {
+        margin: 0 0 28px;
+        color: var(--sidebar-muted);
+        line-height: 1.6;
+      }
+
+      .sidebar nav {
+        display: grid;
+        gap: 10px;
+      }
+
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        padding: 11px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .sidebar a:hover,
+      .sidebar a:focus-visible {
+        transform: translateX(4px);
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+      }
+
+      .content {
+        padding: 48px 5vw;
+      }
+
+      .hero,
+      .panel {
+        max-width: 920px;
+        background: var(--surface);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 36px;
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 16px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .hero h2 {
+        margin: 0 0 14px;
+        font-size: clamp(2.4rem, 4vw, 4rem);
+        line-height: 0.95;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 62ch;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.75;
+      }
+
+      .panel {
+        padding: 30px 32px;
+        margin-bottom: 20px;
+      }
+
+      .panel h3 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 1.7rem;
+      }
+
+      .panel p,
+      .panel li {
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .panel ul,
+      .panel ol {
+        padding-left: 22px;
+        margin: 12px 0 0;
+      }
+
+      .stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .callout {
+        padding: 16px 18px;
+        border-left: 4px solid var(--accent);
+        border-radius: 16px;
+        background: var(--surface-strong);
+      }
+
+      code,
+      pre {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      code {
+        padding: 2px 7px;
+        border-radius: 8px;
+        background: rgba(58, 56, 56, 0.08);
+        color: #000000;
+      }
+
+      pre {
+        margin: 16px 0 0;
+        padding: 18px;
+        overflow-x: auto;
+        border-radius: 18px;
+        background: #d6d9db;
+        color: #eef3f8;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .tile {
+        padding: 18px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      .tile strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+
+      @media (max-width: 920px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          height: auto;
+        }
+
+        .content {
+          padding-top: 24px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>Coddy Docs</h1>
+        <p>Installation, deployment, and packaging notes for marketplace delivery.</p>
+        <nav aria-label="Documentation navigation">
+          <a href="#overview">Overview</a>
+          <a href="#requirements">Requirements</a>
+          <a href="#server">Server Requirements</a>
+          <a href="#install">Installation</a>
+          <a href="#env">Environment Variables</a>
+          <a href="#run">Run Locally</a>
+          <a href="#production">Production</a>
+          <a href="#assets">Assets</a>
+          <a href="#support">Support</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="hero" id="overview">
+          <span class="eyebrow">Installation Guide</span>
+          <h2>Launch Coddy on your machine.</h2>
+          <p>
+            This page walks through local and production setup for the Coddy
+            project, including installation, environment variables, deployment
+            preparation, and packaged asset notes for marketplace delivery.
+          </p>
+        </section>
+
+        <section class="panel" id="requirements">
+          <h3>Requirements</h3>
+          <div class="stack">
+            <p>Make sure these pieces are ready before you begin:</p>
+            <div class="grid">
+              <div class="tile">
+                <strong>Node.js and npm</strong>
+                Use a recent Node.js version that works with Next.js 16 and Prisma.
+              </div>
+              <div class="tile">
+                <strong>PostgreSQL database</strong>
+                The app expects a PostgreSQL connection string, with Neon recommended in the project template. Use a Neon IPv6-supported connection string.
+              </div>
+              <div class="tile">
+                <strong>API keys</strong>
+                Prepare a Together AI API key for the core generation flow, plus any optional provider credentials for the extra integrations you want to enable.
+              </div>
+              <div class="tile">
+                <strong>Git</strong>
+                Git is needed to clone the repository locally.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="server">
+          <h3>Server Requirements</h3>
+          <div class="grid">
+            <div class="tile">
+              <strong>Operating System</strong>
+              Linux-based hosting such as Ubuntu is recommended for production deployment.
+            </div>
+            <div class="tile">
+              <strong>Node.js</strong>
+              Install a modern Node.js version compatible with Next.js 16 and Prisma.
+            </div>
+            <div class="tile">
+              <strong>Memory</strong>
+              At least 2 GB RAM is recommended for smooth installs, builds, and runtime stability.
+            </div>
+            <div class="tile">
+              <strong>Storage</strong>
+              Keep at least 5 GB of free disk space for the app files, dependencies, and build output.
+            </div>
+            <div class="tile">
+              <strong>Database</strong>
+              Use a Neon PostgreSQL database with an IPv6-supported connection string.
+            </div>
+            <div class="tile">
+              <strong>Process Manager</strong>
+              PM2 is recommended to keep the Node.js app running in production.
+            </div>
+            <div class="tile">
+              <strong>Web Server</strong>
+              Nginx is recommended as a reverse proxy for your domain and SSL configuration.
+            </div>
+            <div class="tile">
+              <strong>SSL Certificate</strong>
+              Your production domain should use HTTPS with a valid SSL certificate.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="install">
+          <h3>Installation</h3>
+          <ol>
+            <li>Download the project package from CodeCanyon.</li>
+            <li>Extract the ZIP file on your local machine.</li>
+            <li>Open the extracted project folder in your terminal.</li>
+            <li>Copy the example environment file into a real <code>.env</code> file.</li>
+            <li>Install dependencies with npm.</li>
+          </ol>
+          <pre><code>cd Coddy
+copy .example.env .env
+npm install</code></pre>
+          <div class="callout">
+            The project runs <code>prisma generate</code> after install, so your dependency install also prepares the Prisma client automatically.
+          </div>
+        </section>
+
+        <section class="panel" id="env">
+          <h3>Environment Variables</h3>
+          <p>
+            Start with <code>.example.env</code> and fill in the values that match
+            the features you want to use. The packaged template documents the
+            following settings:
+          </p>
+          <ul>
+            <li><code>TOGETHER_API_KEY</code> for the main AI generation provider.</li>
+            <li><code>HELICONE_API_KEY</code> for optional observability.</li>
+            <li><code>MODELSLAB_API_KEY</code> for ModelsLab-backed models.</li>
+            <li><code>CSB_API_KEY</code> for CodeSandbox and Sandpack preview features.</li>
+            <li><code>DATABASE_URL</code> for Prisma and PostgreSQL, with Neon suggested. Use the IPv6-supported Neon connection string.</li>
+            <li><code>NETLIFY_CLIENT_ID</code> if you want the Netlify connect flow.</li>
+            <li><code>VERCEL_CLIENT_ID</code> and <code>VERCEL_CLIENT_SECRET</code> for Vercel OAuth.</li>
+            <li><code>NEXT_PUBLIC_VERCEL_APP_CLIENT_ID</code> and <code>VERCEL_APP_CLIENT_SECRET</code> for Sign in with Vercel.</li>
+            <li><code>UPTIMEHUB_API_KEY</code> for uptime monitoring integration.</li>
+            <li><code>MICROLINK_API_KEY</code> for optional URL preview metadata.</li>
+            <li><code>NEXT_PUBLIC_SITE_URL</code> for absolute callback and redirect URLs.</li>
+            <li><code>NEXT_PUBLIC_PLAUSIBLE_DOMAIN</code> for optional Plausible analytics.</li>
+            <li><code>NEXT_PUBLIC_DEVELOPMENT_URL</code> for a non-Vercel development URL override.</li>
+            <li><code>STRIPE_*</code> variables for billing support.</li>
+            <li><code>BUNNY_*</code> variables for preview thumbnails and media storage.</li>
+          </ul>
+          <pre><code>TOGETHER_API_KEY=your_key_here
+MODELSLAB_API_KEY=your_key_here
+CSB_API_KEY=your_key_here
+DATABASE_URL=your_neon_ipv6_supported_connection_string
+NEXT_PUBLIC_SITE_URL=http://localhost:3000</code></pre>
+          <div class="callout">
+            If you are using Neon, make sure your <code>DATABASE_URL</code> is the IPv6-supported connection string, then run the Prisma migration command before starting the app.
+          </div>
+        </section>
+
+        <section class="panel" id="run">
+          <h3>Run Locally</h3>
+          <p>Once your dependencies and environment variables are in place, start the development server:</p>
+          <div class="callout">
+            Before the first signup, open your Neon dashboard and go to <code>Auth</code> to
+            <code>Configuration</code> under <code>Authentication</code>. Make sure
+            <code>Verify at Sign-up</code> is disabled before creating the first account.
+          </div>
+          <pre><code>npm run migrate:deploy
+npm run dev</code></pre>
+          <p>
+            After the server starts, open <code>http://localhost:3000</code> in your browser.
+            If the app needs database tables that are not created yet, run your Prisma migration workflow before testing deeper features.
+          </p>
+          <div class="callout">
+            For the first admin setup, visit <code>/admin</code> after the app is running and create your admin password there.
+            Then go to <code>/admin/dashboard/site</code> and disable admin signups so no other users can register as admins.
+          </div>
+        </section>
+
+        <section class="panel" id="production">
+          <h3>Production Installation</h3>
+          <p>
+            To deploy this project in production, upload the extracted CodeCanyon package to your server,
+            configure the production environment variables, install dependencies, build the app, and start it.
+          </p>
+          <ol>
+            <li>Upload the project files to your VPS, cloud server, or hosting environment.</li>
+            <li>Create a production <code>.env</code> file with your live database, domain, and service keys.</li>
+            <li>Install dependencies on the server.</li>
+            <li>Run the Prisma migrations for production.</li>
+            <li>Build the Next.js application.</li>
+            <li>Start the production server.</li>
+          </ol>
+          <pre><code>copy .example.env .env
+npm install
+npm run migrate:deploy
+npm run build
+npm run start</code></pre>
+          <div class="callout">
+            Set <code>NEXT_PUBLIC_SITE_URL</code> to your live domain and use your production
+            <code>DATABASE_URL</code> and live service credentials before building. If you use Neon, choose the IPv6-supported connection string first, then run migrations.
+          </div>
+        </section>
+
+        <section class="panel" id="assets">
+          <h3>Assets and Licensing</h3>
+          <p>
+            Review every bundled third-party asset before publishing the item on
+            a marketplace. The package currently includes font files in
+            <code>public/Aeonik/</code>.
+          </p>
+          <ul>
+            <li>Make sure you have redistribution rights for every included font, image, and icon set.</li>
+            <li>If your license does not allow redistribution, replace the asset before packaging the final download.</li>
+            <li>Keep a credits or license section in your documentation for any third-party resources you include.</li>
+          </ul>
+          <div class="callout">
+            Recommended credits entry: Aeonik font files in <code>public/Aeonik/</code>, used under your commercial redistribution license if applicable.
+          </div>
+        </section>
+
+        <section class="panel" id="support">
+          <h3>Support</h3>
+          <p>
+            Provide customer support through your CodeCanyon support channel,
+            item comments, or the contact method published on your author
+            profile. Update this section before listing the item so buyers know
+            exactly where to reach you.
+          </p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+# Dependencies
+node_modules
+.pnpm-store
+.npm
+.pnpm
+.yarn
+.bun
+.pnpm-debug.log
+.pnp
+.pnp.js
+.yarn/install-state.gz
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/*.gz
+
+# Build outputs and caches
+.next
+.next-dev.*
+.turbo
+.cache
+.next/cache
+.swc
+.parcel-cache
+.eslintcache
+out
+build
+dist
+coverage
+*.tsbuildinfo
+next-env.d.ts
+
+# Local environment and secrets
+.env
+.env.*
+!.example.env
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# VCS and local tooling
+.git
+.gitignore
+.github
+.vscode
+.idea
+.vercel
+.railway
+.railpack
+.cursor
+.DS_Store
+
+# Local docs, archives, and generated bundles
+documentation
+documentation.zip
+*.md
+!README.md
+*.zip
+*.tar
+*.tgz
+
+# Local-only test and scratch files
+test-*.js
+*.local

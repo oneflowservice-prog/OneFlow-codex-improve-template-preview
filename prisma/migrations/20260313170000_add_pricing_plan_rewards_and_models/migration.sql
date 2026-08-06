@@ -1,0 +1,3 @@
+ALTER TABLE "PricingPlan"
+ADD COLUMN "rewardTokens" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "allowedModelValues" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
